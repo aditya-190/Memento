@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="progress_bar">
+        <item>@color/Google_2</item>
+        <item>@color/Google_3</item>
+        <item>@color/Google_4</item>
+        <item>@color/Google_1</item>
+    </integer-array>
+</resources>

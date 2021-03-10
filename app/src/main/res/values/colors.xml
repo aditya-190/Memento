@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="backgroundColor">#4F4FBF</color>
+    <color name="secondaryColor">#FF6F00</color>
+    <color name="shadowColor">#AAA7A7</color>
+
+    <color name="Google_1">#4885ed</color>
+    <color name="Google_2">#db3236</color>
+    <color name="Google_3">#f4c20d</color>
+    <color name="Google_4">#3cba54</color>
+</resources>
