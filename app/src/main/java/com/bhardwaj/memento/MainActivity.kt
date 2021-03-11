@@ -1,6 +1,7 @@
 package com.bhardwaj.memento
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bhardwaj.memento.databinding.ActivityMainBinding
@@ -9,6 +10,7 @@ import com.bhardwaj.memento.fragments.DownloadFragment
 import com.bhardwaj.memento.fragments.FavouriteFragment
 import com.bhardwaj.memento.fragments.HomeFragment
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
+import kotlin.system.exitProcess
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,6 +45,26 @@ class MainActivity : AppCompatActivity() {
                 else -> HomeFragment()
             }
             supportFragmentManager.beginTransaction().replace(R.id.fragments, fragment).commit()
+        }
+    }
+
+    fun quitDialog() {
+        binding.quit.visibility = View.VISIBLE
+        binding.quitHead.visibility = View.VISIBLE
+        binding.sad.visibility = View.VISIBLE
+        binding.no.visibility = View.VISIBLE
+        binding.yes.visibility = View.VISIBLE
+
+        binding.yes.setOnClickListener {
+            exitProcess(0)
+        }
+
+        binding.no.setOnClickListener {
+            binding.quit.visibility = View.GONE
+            binding.quitHead.visibility = View.GONE
+            binding.sad.visibility = View.GONE
+            binding.no.visibility = View.GONE
+            binding.yes.visibility = View.GONE
         }
     }
 

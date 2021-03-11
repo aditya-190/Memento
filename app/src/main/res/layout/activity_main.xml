@@ -6,6 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".40" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/g4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent=".60" />
+
     <FrameLayout
         android:id="@+id/fragments"
         android:layout_width="0dp"
@@ -31,4 +59,84 @@
         app:mbn_rippleColor="@color/secondaryColor"
         app:mbn_selectedIconColor="@color/secondaryColor"
         app:mbn_shadowColor="@color/shadowColor" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/quit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:cardCornerRadius="32dp"
+        app:cardElevation="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:0.75"
+        app:layout_constraintEnd_toEndOf="@id/g2"
+        app:layout_constraintStart_toStartOf="@id/g1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/sad"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:elevation="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/quit"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="@id/g4"
+        app:layout_constraintStart_toStartOf="@id/g3"
+        app:layout_constraintTop_toTopOf="@id/quit"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/sad" />
+
+    <TextView
+        android:id="@+id/quit_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:elevation="16dp"
+        android:text="@string/really_quit"
+        android:textColor="@color/Google_2"
+        android:textSize="18sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@id/quit"
+        app:layout_constraintStart_toStartOf="@id/quit"
+        app:layout_constraintTop_toBottomOf="@id/sad" />
+
+    <TextView
+        android:id="@+id/no"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_red_button"
+        android:elevation="16dp"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="@string/no"
+        android:textAllCaps="false"
+        android:textColor="@color/Google_2"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/quit"
+        app:layout_constraintEnd_toStartOf="@id/yes" />
+
+    <TextView
+        android:id="@+id/yes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/background_green_button"
+        android:elevation="16dp"
+        android:gravity="center"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="8dp"
+        android:text="@string/yes"
+        android:textAllCaps="false"
+        android:textColor="@color/Google_4"
+        android:textSize="20sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/quit"
+        app:layout_constraintEnd_toEndOf="@id/quit" />
 </androidx.constraintlayout.widget.ConstraintLayout>

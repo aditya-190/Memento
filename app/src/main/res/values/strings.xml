@@ -3,4 +3,7 @@
     <string name="home">Home</string>
     <string name="favourite">Favourite</string>
     <string name="download">Download</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="really_quit">Do you Really want to Quit?</string>
 </resources>

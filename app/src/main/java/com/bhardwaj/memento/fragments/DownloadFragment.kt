@@ -1,12 +1,12 @@
 package com.bhardwaj.memento.fragments
 
-import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.bhardwaj.memento.R
+import androidx.recyclerview.widget.RecyclerView
+import com.bhardwaj.memento.MainActivity
 import com.bhardwaj.memento.databinding.FragmentDownloadBinding
 import kotlin.system.exitProcess
 
@@ -22,13 +22,22 @@ class DownloadFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        initialise()
         clickListeners()
+        fetchData()
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun initialise() {
     }
 
     private fun clickListeners() {
         binding.quit.setOnClickListener {
-            exitProcess(0)
+            (activity as MainActivity).quitDialog()
         }
+    }
+
+
+    private fun fetchData() {
     }
 }
