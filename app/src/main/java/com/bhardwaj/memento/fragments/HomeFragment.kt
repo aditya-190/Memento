@@ -8,43 +8,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.bhardwaj.memento.MySingleton
+import com.bhardwaj.memento.Common
 import com.bhardwaj.memento.databinding.FragmentHomeBinding
-import com.bumptech.glide.Glide
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
-
-    private lateinit var currentMemeUrl: String
+    private lateinit var binding: FragmentHomeBinding
     private var isDownload: Boolean = false
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         clickListeners()
-        fetchRandomMeme()
+        Common.fetchRandomMeme(binding, this@HomeFragment.activity!!)
         super.onViewCreated(view, savedInstanceState)
     }
 
     private fun clickListeners() {
-
-        binding.cardView.setOnClickListener(object : DoubleClickListener() {
+        binding.cardView.setOnClickListener(object : Common.DoubleClickListener() {
             override fun onDoubleClick(v: View?) {
                 binding.likeButton.also { lottie ->
-
                     lottie.playAnimation()
                     lottie.addAnimatorListener(object : AnimatorListener {
                         override fun onAnimationStart(animation: Animator?) {
@@ -66,7 +54,7 @@ class HomeFragment : Fragment() {
         })
 
         binding.nextButton.setOnClickListener {
-            fetchRandomMeme()
+            Common.fetchRandomMeme(binding, this@HomeFragment.activity!!)
             binding.nextButton.also {
                 it.speed = 3F
                 it.playAnimation()
@@ -79,54 +67,13 @@ class HomeFragment : Fragment() {
                 it.playAnimation()
                 isDownload = !isDownload
             }
-
-            CoroutineScope(Dispatchers.IO).launch {
-                TODO()
-            }
         }
 
         binding.shareButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, "Check this cool meme : $currentMemeUrl")
+            intent.putExtra(Intent.EXTRA_TEXT, "Check this cool meme : ${Common.currentMemeUrl}")
             startActivity(Intent.createChooser(intent, "Share this meme with : "))
         }
-    }
-
-    private fun fetchRandomMeme() {
-        binding.progressBar.visibility = View.VISIBLE
-        val url = "https://meme-api.herokuapp.com/gimme"
-
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.GET, url, null, { response ->
-                currentMemeUrl = response.getString("url")
-                Glide.with(this).load(currentMemeUrl).into(binding.image)
-                binding.progressBar.visibility = View.GONE
-            }, {
-                binding.progressBar.visibility = View.GONE
-            })
-        MySingleton.getInstance(this.activity!!).addToRequestQueue(jsonObjectRequest)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-}
-
-abstract class DoubleClickListener : View.OnClickListener {
-    private var lastClickTime: Long = 0
-    override fun onClick(v: View?) {
-        val clickTime = System.currentTimeMillis()
-        if (clickTime - lastClickTime < DOUBLE_CLICK_TIME_DELTA) {
-            onDoubleClick(v)
-        }
-        lastClickTime = clickTime
-    }
-
-    abstract fun onDoubleClick(v: View?)
-
-    companion object {
-        private const val DOUBLE_CLICK_TIME_DELTA: Long = 300
     }
 }

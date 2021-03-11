@@ -1,9 +1,8 @@
 package com.bhardwaj.memento
 
-import android.os.Build
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.bhardwaj.memento.databinding.ActivityMainBinding
 import com.bhardwaj.memento.fragments.CategoryFragment
 import com.bhardwaj.memento.fragments.DownloadFragment
@@ -31,46 +30,27 @@ class MainActivity : AppCompatActivity() {
             add(MeowBottomNavigation.Model(3, R.drawable.icon_download))
             show(0)
         }
-
-        supportFragmentManager.beginTransaction().replace(R.id.fragments, HomeFragment())
-            .addToBackStack(null).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.fragments, HomeFragment()).commit()
     }
 
     private fun clickListeners() {
         binding.navigation.setOnClickMenuListener {
-            when (it.id) {
-                1 -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragments, CategoryFragment())
-                        .addToBackStack(null).commit()
-                }
-                2 -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragments, FavouriteFragment())
-                        .addToBackStack(null).commit()
-                }
-                3 -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragments, DownloadFragment())
-                        .addToBackStack(null).commit()
-                }
-                else -> {
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragments, HomeFragment())
-                        .addToBackStack(null).commit()
-                }
-            }
-        }
-    }
 
-    private fun fullScreen() {
-        if (Build.VERSION.SDK_INT in 12..18) this.window.decorView.systemUiVisibility = View.GONE
-        else window.decorView.systemUiVisibility =
-            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            val fragment: Fragment = when (it.id) {
+                1 -> CategoryFragment()
+                2 -> FavouriteFragment()
+                3 -> DownloadFragment()
+                else -> HomeFragment()
+            }
+            supportFragmentManager.beginTransaction().replace(R.id.fragments, fragment).commit()
+        }
     }
 
     override fun onResume() {
         super.onResume()
-        fullScreen()
+        Common.fullScreen(this.window)
+    }
+
+    override fun onBackPressed() {
     }
 }

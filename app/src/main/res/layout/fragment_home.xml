@@ -105,8 +105,7 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/g2"
             app:layout_constraintStart_toStartOf="@id/g1"
-            app:layout_constraintTop_toTopOf="@id/g3"
-            app:rippleColor="@android:color/transparent">
+            app:layout_constraintTop_toTopOf="@id/g3">
 
             <ImageView
                 android:id="@+id/image"
