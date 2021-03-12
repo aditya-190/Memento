@@ -64,15 +64,22 @@
             app:layout_constraintEnd_toEndOf="@id/g2"
             app:layout_constraintTop_toTopOf="@id/download" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/download_recycler"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="12dp"
             app:layout_constraintBottom_toTopOf="@id/ads_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/g3" />
+            app:layout_constraintEnd_toEndOf="@id/g2"
+            app:layout_constraintStart_toStartOf="@id/g1"
+            app:layout_constraintTop_toTopOf="@id/g3">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/download_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.cardview.widget.CardView>
 
         <View
             android:id="@+id/ads_view"

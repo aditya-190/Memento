@@ -12,13 +12,11 @@ import com.bumptech.glide.Glide
 class DownloadAdapter(private var downloadList: ArrayList<Downloads> = ArrayList()) : RecyclerView.Adapter<DownloadAdapter.DownloadViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DownloadViewHolder {
-        return DownloadViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_download, parent, false))
+        return DownloadViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_item, parent, false))
     }
 
     override fun onBindViewHolder(holder: DownloadViewHolder, position: Int) {
-        val current: Downloads = downloadList[position]
-
-        Glide.with(holder.itemView.context).load(current).into(holder.image)
+        Glide.with(holder.itemView.context).load(downloadList[position].MemeURL).into(holder.image)
     }
 
     override fun getItemCount(): Int {

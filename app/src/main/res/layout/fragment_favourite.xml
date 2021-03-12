@@ -73,7 +73,13 @@
             app:layout_constraintBottom_toTopOf="@id/ads_view"
             app:layout_constraintEnd_toEndOf="@id/g2"
             app:layout_constraintStart_toStartOf="@id/g1"
-            app:layout_constraintTop_toTopOf="@id/g3" />
+            app:layout_constraintTop_toTopOf="@id/g3">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/favourite_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.cardview.widget.CardView>
 
         <View
             android:id="@+id/ads_view"
