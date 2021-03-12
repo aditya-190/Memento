@@ -66,7 +66,6 @@
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/share" />
 
-
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/likeButton"
             android:layout_width="0dp"

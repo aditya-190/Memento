@@ -78,7 +78,9 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/download_recycler"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:elevation="16dp"
+                tools:listitem="@layout/single_item" />
         </androidx.cardview.widget.CardView>
 
         <View

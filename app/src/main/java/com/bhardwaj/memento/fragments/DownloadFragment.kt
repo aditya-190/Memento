@@ -1,6 +1,8 @@
 package com.bhardwaj.memento.fragments
 
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import com.bhardwaj.memento.MainActivity
 import com.bhardwaj.memento.adapter.DownloadAdapter
 import com.bhardwaj.memento.databinding.FragmentDownloadBinding
 import com.bhardwaj.memento.models.Downloads
+import java.io.File
 
 class DownloadFragment : Fragment() {
     private lateinit var binding: FragmentDownloadBinding
@@ -46,15 +49,9 @@ class DownloadFragment : Fragment() {
     }
 
     private fun fetchData() {
-        downloadList.add(Downloads("https://i.redd.it/l3no0vxya9m61.jpg"))
-        downloadList.add(Downloads("https://i.redd.it/n4i3g4uufem61.jpg"))
-        downloadList.add(Downloads("https://i.redd.it/77tekcetbcm61.jpg"))
-        downloadList.add(Downloads("https://i.redd.it/hlljmhkikem61.jpg"))
-        downloadList.add(Downloads("https://i.redd.it/ejfofsf0mcm61.jpg"))
-        downloadList.add(Downloads("https://i.redd.it/ibwc9bc6acm61.jpg"))
-        downloadList.add(Downloads("https://i.redd.it/l3no0vxya9m61.jpg"))
-        downloadList.add(Downloads("https://i.redd.it/l3no0vxya9m61.jpg"))
-        downloadList.add(Downloads("https://i.redd.it/l3no0vxya9m61.jpg"))
+        downloadList.add(Downloads(Uri.fromFile(File("/sdcard/DCIM/Memento/Downloads/Memento-625916469.PNG"))))
+        downloadList.add(Downloads(Uri.fromFile(File("/sdcard/DCIM/Memento/Downloads/Memento-626404790.PNG"))))
+        downloadList.add(Downloads(Uri.fromFile(File("/sdcard/DCIM/Memento/Downloads/Memento-626413728.PNG"))))
         binding.downloadRecycler.adapter?.notifyDataSetChanged()
     }
 }

@@ -1,5 +1,6 @@
 package com.bhardwaj.memento.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,7 @@ class FavouriteAdapter(private var favouriteList: ArrayList<Favourites> = ArrayL
     }
 
     override fun onBindViewHolder(holder: FavouriteViewHolder, position: Int) {
-        Glide.with(holder.itemView.context).load(favouriteList[position].MemeURL).into(holder.image)
+        Glide.with(holder.itemView.context).load(favouriteList[position].favouriteURI).into(holder.image)
     }
 
     override fun getItemCount(): Int {

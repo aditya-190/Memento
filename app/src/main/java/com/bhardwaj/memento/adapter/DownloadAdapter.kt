@@ -1,5 +1,6 @@
 package com.bhardwaj.memento.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +17,7 @@ class DownloadAdapter(private var downloadList: ArrayList<Downloads> = ArrayList
     }
 
     override fun onBindViewHolder(holder: DownloadViewHolder, position: Int) {
-        Glide.with(holder.itemView.context).load(downloadList[position].MemeURL).into(holder.image)
+        Glide.with(holder.itemView.context).load(downloadList[position].downloadURI).into(holder.image)
     }
 
     override fun getItemCount(): Int {

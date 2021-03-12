@@ -1,15 +1,23 @@
 package com.bhardwaj.memento.fragments
 
 import android.animation.Animator
-import android.animation.Animator.AnimatorListener
+import android.content.ContentValues
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import com.bhardwaj.memento.Common
 import com.bhardwaj.memento.databinding.FragmentHomeBinding
+import java.io.File
+import java.io.IOException
+import java.io.OutputStream
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
@@ -33,10 +41,10 @@ class HomeFragment : Fragment() {
         binding.cardView.setOnClickListener(object : Common.DoubleClickListener() {
             override fun onDoubleClick(v: View?) {
                 binding.likeButton.also { lottie ->
+                    lottie.alpha = 0.75F
                     lottie.playAnimation()
-                    lottie.addAnimatorListener(object : AnimatorListener {
+                    lottie.addAnimatorListener(object : Animator.AnimatorListener {
                         override fun onAnimationStart(animation: Animator?) {
-                            lottie.alpha = 0.7F
                         }
 
                         override fun onAnimationEnd(animation: Animator?) {
@@ -48,8 +56,10 @@ class HomeFragment : Fragment() {
 
                         override fun onAnimationRepeat(animation: Animator?) {
                         }
+
                     })
                 }
+                saveImageToGallery(binding.image.drawable.toBitmap(), "Favourites")
             }
         })
 
@@ -59,6 +69,14 @@ class HomeFragment : Fragment() {
                 it.speed = 3F
                 it.playAnimation()
             }
+
+            if (isDownload) {
+                binding.downloadButton.also {
+                    it.speed = -2.5F
+                    it.playAnimation()
+                    isDownload = !isDownload
+                }
+            }
         }
 
         binding.downloadButton.setOnClickListener {
@@ -67,6 +85,7 @@ class HomeFragment : Fragment() {
                 it.playAnimation()
                 isDownload = !isDownload
             }
+            saveImageToGallery(binding.image.drawable.toBitmap(), "Downloads")
         }
 
         binding.shareButton.setOnClickListener {
@@ -74,6 +93,32 @@ class HomeFragment : Fragment() {
             intent.type = "text/plain"
             intent.putExtra(Intent.EXTRA_TEXT, "Check this cool meme : ${Common.currentMemeUrl}")
             startActivity(Intent.createChooser(intent, "Share this meme with : "))
+        }
+    }
+
+    private fun saveImageToGallery(bitmap: Bitmap, fileLocation: String) {
+        val fileName = String.format("Memento-%d.PNG", System.currentTimeMillis().toInt())
+        val filePath = String.format("%s%sMemento%s%s", Environment.DIRECTORY_DCIM, File.separator, File.separator, fileLocation)
+
+        val contentValues = ContentValues()
+        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/*")
+        contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, filePath)
+
+        val resolver = context!!.contentResolver
+
+        val stream: OutputStream?
+        var uri: Uri? = null
+
+        try {
+            val contentUri: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            uri = resolver.insert(contentUri, contentValues)
+            stream = resolver.openOutputStream(uri!!)
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+            stream?.close()
+
+        } catch (error: IOException) {
+            resolver.delete(uri!!, null, null)
         }
     }
 }

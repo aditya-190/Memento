@@ -1,5 +1,7 @@
 package com.bhardwaj.memento.models
 
+import android.net.Uri
+
 data class Favourites(
-        var MemeURL: String = "",
+        var favouriteURI: Uri? = null,
 )
