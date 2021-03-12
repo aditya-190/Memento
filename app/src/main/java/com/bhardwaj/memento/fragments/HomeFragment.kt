@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import com.bhardwaj.memento.Common
+import com.bhardwaj.memento.MainActivity
 import com.bhardwaj.memento.databinding.FragmentHomeBinding
 import java.io.File
 import java.io.IOException
@@ -97,6 +98,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun saveImageToGallery(bitmap: Bitmap, fileLocation: String) {
+        (activity as MainActivity).requestPermissions()
+
         val fileName = String.format("Memento-%d.PNG", System.currentTimeMillis().toInt())
         val filePath = String.format("%s%sMemento%s%s", Environment.DIRECTORY_DCIM, File.separator, File.separator, fileLocation)
 

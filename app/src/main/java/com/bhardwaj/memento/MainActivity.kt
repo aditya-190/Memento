@@ -1,8 +1,11 @@
 package com.bhardwaj.memento
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bhardwaj.memento.databinding.ActivityMainBinding
 import com.bhardwaj.memento.fragments.CategoryFragment
@@ -37,7 +40,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun clickListeners() {
         binding.navigation.setOnClickMenuListener {
-
             val fragment: Fragment = when (it.id) {
                 1 -> CategoryFragment()
                 2 -> FavouriteFragment()
@@ -74,5 +76,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
+    }
+
+    private fun checkWritePermission() = ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    private fun checkReadPermission() = ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+
+    fun requestPermissions() {
+        val requestPermissionList = mutableListOf<String>()
+        if (!checkReadPermission()) {
+            requestPermissionList.add(android.Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        if (!checkWritePermission()) {
+            requestPermissionList.add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        if (requestPermissionList.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this@MainActivity, requestPermissionList.toTypedArray(), 100)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }
