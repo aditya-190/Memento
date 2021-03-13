@@ -8,13 +8,11 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bhardwaj.memento.databinding.ActivityMainBinding
-import com.bhardwaj.memento.fragments.CategoryFragment
 import com.bhardwaj.memento.fragments.DownloadFragment
 import com.bhardwaj.memento.fragments.FavouriteFragment
 import com.bhardwaj.memento.fragments.HomeFragment
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
 import kotlin.system.exitProcess
-
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -22,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         initialise()
         clickListeners()
     }
@@ -30,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     private fun initialise() {
         binding.navigation.apply {
             add(MeowBottomNavigation.Model(0, R.drawable.icon_home))
-            add(MeowBottomNavigation.Model(1, R.drawable.icon_category))
             add(MeowBottomNavigation.Model(2, R.drawable.icon_favourite))
             add(MeowBottomNavigation.Model(3, R.drawable.icon_download))
             show(0)
@@ -41,7 +37,6 @@ class MainActivity : AppCompatActivity() {
     private fun clickListeners() {
         binding.navigation.setOnClickMenuListener {
             val fragment: Fragment = when (it.id) {
-                1 -> CategoryFragment()
                 2 -> FavouriteFragment()
                 3 -> DownloadFragment()
                 else -> HomeFragment()
@@ -75,9 +70,6 @@ class MainActivity : AppCompatActivity() {
         Common.fullScreen(this.window)
     }
 
-    override fun onBackPressed() {
-    }
-
     private fun checkWritePermission() = ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
     private fun checkReadPermission() = ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
 
@@ -98,5 +90,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onBackPressed() {
     }
 }

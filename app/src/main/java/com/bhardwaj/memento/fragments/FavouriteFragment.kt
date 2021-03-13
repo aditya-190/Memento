@@ -11,8 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bhardwaj.memento.MainActivity
 import com.bhardwaj.memento.adapter.FavouriteAdapter
 import com.bhardwaj.memento.databinding.FragmentFavouriteBinding
-import com.bhardwaj.memento.models.Downloads
 import com.bhardwaj.memento.models.Favourites
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class FavouriteFragment : Fragment() {
@@ -36,10 +39,12 @@ class FavouriteFragment : Fragment() {
     }
 
     private fun initialise() {
-        binding.favouriteRecycler.also {
-            it.layoutManager = LinearLayoutManager(this@FavouriteFragment.activity)
-            it.adapter = adapter
-            it.overScrollMode = View.OVER_SCROLL_NEVER
+        binding.favouriteRecycler.also { recycler ->
+            recycler.layoutManager = LinearLayoutManager(this@FavouriteFragment.activity).also {
+                it.stackFromEnd = true
+            }
+            recycler.adapter = adapter
+            recycler.overScrollMode = View.OVER_SCROLL_NEVER
         }
     }
 
@@ -50,9 +55,20 @@ class FavouriteFragment : Fragment() {
     }
 
     private fun fetchData() {
-        favouriteList.add(Favourites(Uri.fromFile(File("/sdcard/DCIM/Memento/Favourites/Memento-625913484.PNG"))))
-        favouriteList.add(Favourites(Uri.fromFile(File("/sdcard/DCIM/Memento/Favourites/Memento-626402837.PNG"))))
-        favouriteList.add(Favourites(Uri.fromFile(File("/sdcard/DCIM/Memento/Favourites/Memento-626407600.PNG"))))
-        binding.favouriteRecycler.adapter?.notifyDataSetChanged()
+        GlobalScope.launch(Dispatchers.IO) {
+            val filePath = File(String.format("%s%sMemento%sFavourites%s", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString(), File.separator, File.separator, File.separator))
+            val allFiles = filePath.listFiles()
+
+            if (!allFiles.isNullOrEmpty()) {
+                for (i in allFiles) {
+                    favouriteList.add(Favourites(Uri.fromFile(File(filePath.absolutePath + File.separator + i.name))))
+                }
+                binding.favouriteRecycler.scrollToPosition(allFiles.size - 1)
+            }
+            withContext(Dispatchers.Main) {
+                binding.nothing.visibility = if (favouriteList.isEmpty()) View.VISIBLE else View.GONE
+                binding.favouriteRecycler.adapter?.notifyDataSetChanged()
+            }
+        }
     }
 }

@@ -16,6 +16,9 @@ import androidx.fragment.app.Fragment
 import com.bhardwaj.memento.Common
 import com.bhardwaj.memento.MainActivity
 import com.bhardwaj.memento.databinding.FragmentHomeBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
@@ -57,7 +60,6 @@ class HomeFragment : Fragment() {
 
                         override fun onAnimationRepeat(animation: Animator?) {
                         }
-
                     })
                 }
                 saveImageToGallery(binding.image.drawable.toBitmap(), "Favourites")
@@ -97,31 +99,33 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun saveImageToGallery(bitmap: Bitmap, fileLocation: String) {
-        (activity as MainActivity).requestPermissions()
+    fun saveImageToGallery(bitmap: Bitmap, fileLocation: String) {
+        GlobalScope.launch(Dispatchers.IO) {
+            (activity as MainActivity).requestPermissions()
 
-        val fileName = String.format("Memento-%d.PNG", System.currentTimeMillis().toInt())
-        val filePath = String.format("%s%sMemento%s%s", Environment.DIRECTORY_DCIM, File.separator, File.separator, fileLocation)
+            val fileName = String.format("Memento-%d.PNG", System.currentTimeMillis().toInt())
+            val filePath = String.format("%s%sMemento%s%s", Environment.DIRECTORY_DCIM, File.separator, File.separator, fileLocation)
 
-        val contentValues = ContentValues()
-        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
-        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/*")
-        contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, filePath)
+            val contentValues = ContentValues()
+            contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+            contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/*")
+            contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, filePath)
 
-        val resolver = context!!.contentResolver
+            val resolver = context!!.contentResolver
 
-        val stream: OutputStream?
-        var uri: Uri? = null
+            val stream: OutputStream?
+            var uri: Uri? = null
 
-        try {
-            val contentUri: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            uri = resolver.insert(contentUri, contentValues)
-            stream = resolver.openOutputStream(uri!!)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-            stream?.close()
+            try {
+                val contentUri: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                uri = resolver.insert(contentUri, contentValues)
+                stream = resolver.openOutputStream(uri!!)
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                stream?.close()
 
-        } catch (error: IOException) {
-            resolver.delete(uri!!, null, null)
+            } catch (error: IOException) {
+                resolver.delete(uri!!, null, null)
+            }
         }
     }
 }

@@ -31,6 +31,7 @@ class Common {
             binding.progressBar.visibility = View.VISIBLE
             binding.downloadButton.isEnabled = false
             binding.cardView.isEnabled = false
+
             val url = "https://meme-api.herokuapp.com/gimme"
 
             val request = JsonObjectRequest(

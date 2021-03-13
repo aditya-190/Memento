@@ -12,6 +12,10 @@ import com.bhardwaj.memento.MainActivity
 import com.bhardwaj.memento.adapter.DownloadAdapter
 import com.bhardwaj.memento.databinding.FragmentDownloadBinding
 import com.bhardwaj.memento.models.Downloads
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class DownloadFragment : Fragment() {
@@ -35,10 +39,12 @@ class DownloadFragment : Fragment() {
     }
 
     private fun initialise() {
-        binding.downloadRecycler.also {
-            it.layoutManager = LinearLayoutManager(this@DownloadFragment.activity)
-            it.adapter = adapter
-            it.overScrollMode = View.OVER_SCROLL_NEVER
+        binding.downloadRecycler.also { recycler ->
+            recycler.layoutManager = LinearLayoutManager(this@DownloadFragment.activity).also {
+                it.stackFromEnd = true
+            }
+            recycler.adapter = adapter
+            recycler.overScrollMode = View.OVER_SCROLL_NEVER
         }
     }
 
@@ -49,9 +55,22 @@ class DownloadFragment : Fragment() {
     }
 
     private fun fetchData() {
-        downloadList.add(Downloads(Uri.fromFile(File("/sdcard/DCIM/Memento/Downloads/Memento-625916469.PNG"))))
-        downloadList.add(Downloads(Uri.fromFile(File("/sdcard/DCIM/Memento/Downloads/Memento-626404790.PNG"))))
-        downloadList.add(Downloads(Uri.fromFile(File("/sdcard/DCIM/Memento/Downloads/Memento-626413728.PNG"))))
-        binding.downloadRecycler.adapter?.notifyDataSetChanged()
+        GlobalScope.launch(Dispatchers.IO) {
+            val filePath = File(String.format("%s%sMemento%sDownloads%s", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString(), File.separator, File.separator, File.separator))
+            val allFiles = filePath.listFiles()
+
+            if (!allFiles.isNullOrEmpty()) {
+                for (i in allFiles) {
+                    downloadList.add(Downloads(Uri.fromFile(File(filePath.absolutePath + File.separator + i.name))))
+                }
+                binding.downloadRecycler.scrollToPosition(allFiles.size - 1)
+            }
+
+            withContext(Dispatchers.Main) {
+                binding.nothing.visibility = if (downloadList.isEmpty()) View.VISIBLE else View.GONE
+                binding.downloadRecycler.adapter?.notifyDataSetChanged()
+
+            }
+        }
     }
 }
