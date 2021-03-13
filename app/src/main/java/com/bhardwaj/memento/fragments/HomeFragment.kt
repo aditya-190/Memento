@@ -15,7 +15,11 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import com.bhardwaj.memento.Common
 import com.bhardwaj.memento.MainActivity
+import com.bhardwaj.memento.R
 import com.bhardwaj.memento.databinding.FragmentHomeBinding
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -26,10 +30,12 @@ import java.io.OutputStream
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private var isDownload: Boolean = false
+    private var rewardedAds: RewardedAd? = null
+    private var adsCounter: Int = 1
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -39,6 +45,41 @@ class HomeFragment : Fragment() {
         clickListeners()
         Common.fetchRandomMeme(binding, this@HomeFragment.activity!!)
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun initialiseAds() {
+        RewardedAd.load(
+            this.context!!,
+            getString(R.string.rewarded_id),
+            AdRequest.Builder().build(),
+            object : RewardedAdLoadCallback() {
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    rewardedAds = null
+                }
+
+                override fun onAdLoaded(rewardedAd: RewardedAd) {
+                    rewardedAds = rewardedAd
+                }
+            })
+    }
+
+    private fun showAds() {
+        rewardedAds?.fullScreenContentCallback = object : FullScreenContentCallback() {
+            override fun onAdDismissedFullScreenContent() {
+            }
+
+            override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+            }
+
+            override fun onAdShowedFullScreenContent() {
+                rewardedAds = null
+            }
+        }
+
+        if (rewardedAds != null) {
+            rewardedAds?.show(this@HomeFragment.activity!!) {
+            }
+        }
     }
 
     private fun clickListeners() {
@@ -68,6 +109,18 @@ class HomeFragment : Fragment() {
 
         binding.nextButton.setOnClickListener {
             Common.fetchRandomMeme(binding, this@HomeFragment.activity!!)
+
+            when (adsCounter) {
+                1 -> {
+                    initialiseAds()
+                }
+
+                5 -> {
+                    showAds()
+                    adsCounter = 1
+                }
+            }
+
             binding.nextButton.also {
                 it.speed = 3F
                 it.playAnimation()
@@ -80,6 +133,7 @@ class HomeFragment : Fragment() {
                     isDownload = !isDownload
                 }
             }
+            adsCounter += 1
         }
 
         binding.downloadButton.setOnClickListener {
@@ -104,7 +158,13 @@ class HomeFragment : Fragment() {
             (activity as MainActivity).requestPermissions()
 
             val fileName = String.format("Memento-%d.PNG", System.currentTimeMillis().toInt())
-            val filePath = String.format("%s%sMemento%s%s", Environment.DIRECTORY_DCIM, File.separator, File.separator, fileLocation)
+            val filePath = String.format(
+                "%s%sMemento%s%s",
+                Environment.DIRECTORY_DCIM,
+                File.separator,
+                File.separator,
+                fileLocation
+            )
 
             val contentValues = ContentValues()
             contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)

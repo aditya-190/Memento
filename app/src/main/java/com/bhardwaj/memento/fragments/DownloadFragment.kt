@@ -24,8 +24,8 @@ class DownloadFragment : Fragment() {
     private var adapter: DownloadAdapter = DownloadAdapter(downloadList)
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentDownloadBinding.inflate(inflater, container, false)
         return binding.root
@@ -56,7 +56,16 @@ class DownloadFragment : Fragment() {
 
     private fun fetchData() {
         GlobalScope.launch(Dispatchers.IO) {
-            val filePath = File(String.format("%s%sMemento%sDownloads%s", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString(), File.separator, File.separator, File.separator))
+            val filePath = File(
+                String.format(
+                    "%s%sMemento%sDownloads%s",
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
+                        .toString(),
+                    File.separator,
+                    File.separator,
+                    File.separator
+                )
+            )
             val allFiles = filePath.listFiles()
 
             if (!allFiles.isNullOrEmpty()) {

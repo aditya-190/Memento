@@ -14,7 +14,7 @@ class SplashScreen : AppCompatActivity() {
         Handler(Looper.myLooper()!!).postDelayed({
             startActivity(Intent(this@SplashScreen, MainActivity::class.java))
             finish()
-        }, 1200)
+        }, 800)
     }
 
     override fun onResume() {

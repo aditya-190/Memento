@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundColor"
     tools:context=".fragments.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/g1"
@@ -99,6 +99,7 @@
             android:id="@+id/cardView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginBottom="4dp"
             app:cardCornerRadius="16dp"
             app:cardElevation="12dp"
             app:layout_constraintDimensionRatio="1:1"
@@ -114,21 +115,13 @@
                 android:scaleType="fitXY" />
         </androidx.cardview.widget.CardView>
 
-        <View
-            android:id="@+id/ads_view"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginVertical="4dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/downloadButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:elevation="8dp"
             android:padding="24dp"
-            app:layout_constraintBottom_toTopOf="@id/ads_view"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@id/hiddenView"
             app:layout_constraintStart_toStartOf="@id/g1"
@@ -143,7 +136,6 @@
             android:layout_height="0dp"
             android:clickable="false"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/ads_view"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@id/nextButton"
             app:layout_constraintStart_toEndOf="@id/downloadButton"
@@ -157,7 +149,6 @@
             android:padding="16dp"
             android:rotation="90"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/ads_view"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/g2"
             app:layout_constraintStart_toEndOf="@id/hiddenView"
@@ -170,7 +161,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:elevation="10dp"
-            app:layout_constraintBottom_toTopOf="@id/ads_view"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/g2"
             app:layout_constraintStart_toStartOf="parent"

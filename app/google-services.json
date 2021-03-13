@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "79632695522",
+    "project_id": "memento-aditi",
+    "storage_bucket": "memento-aditi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79632695522:android:7ff71eca54afa5beda5ebb",
+        "android_client_info": {
+          "package_name": "com.bhardwaj.memento"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "79632695522-r4galtdgjkkmap4vk3bq11nkurvlnkm0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASMNcfr9DQMh6SIuWYF3WVpEI6kdGq40U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "79632695522-r4galtdgjkkmap4vk3bq11nkurvlnkm0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

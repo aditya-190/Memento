@@ -6,4 +6,9 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="really_quit">Do you Really want to Quit?</string>
+
+    <string name="app_id">ca-app-pub-5040281513434473~2607780992</string>
+    <string name="home_banner">ca-app-pub-5040281513434473/5629530150</string>
+    <string name="rewarded_id">ca-app-pub-5040281513434473/1294699324</string>
+
 </resources>

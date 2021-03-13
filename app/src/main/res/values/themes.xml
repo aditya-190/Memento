@@ -1,4 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+
     <style name="Theme.Memento" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/backgroundColor</item>
         <item name="colorPrimaryVariant">@color/backgroundColor</item>
@@ -6,11 +7,13 @@
         <item name="colorSecondary">@color/backgroundColor</item>
         <item name="colorSecondaryVariant">@color/backgroundColor</item>
         <item name="colorOnSecondary">@color/backgroundColor</item>
+        <item name="backgroundColor">null</item>
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     </style>
 
     <style name="SplashScreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:statusBarColor" tools:targetApi="l">@color/backgroundColor</item>
         <item name="android:windowBackground">@color/backgroundColor</item>
+        <item name="backgroundColor">@color/backgroundColor</item>
     </style>
 </resources>

@@ -35,24 +35,36 @@ class Common {
             val url = "https://meme-api.herokuapp.com/gimme"
 
             val request = JsonObjectRequest(
-                    Request.Method.GET, url, null, { response ->
-                currentMemeUrl = response.getString("url")
-                Glide.with(context).load(currentMemeUrl).listener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                        return false
-                    }
+                Request.Method.GET, url, null, { response ->
+                    currentMemeUrl = response.getString("url")
+                    Glide.with(context).load(currentMemeUrl)
+                        .listener(object : RequestListener<Drawable> {
+                            override fun onLoadFailed(
+                                e: GlideException?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                return false
+                            }
 
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        binding.downloadButton.isEnabled = true
-                        binding.cardView.isEnabled = true
-                        return false
-                    }
+                            override fun onResourceReady(
+                                resource: Drawable?,
+                                model: Any?,
+                                target: Target<Drawable>?,
+                                dataSource: DataSource?,
+                                isFirstResource: Boolean
+                            ): Boolean {
+                                binding.downloadButton.isEnabled = true
+                                binding.cardView.isEnabled = true
+                                return false
+                            }
 
-                }).into(binding.image)
-                binding.progressBar.visibility = View.GONE
-            }, {
-                binding.progressBar.visibility = View.GONE
-            })
+                        }).into(binding.image)
+                    binding.progressBar.visibility = View.GONE
+                }, {
+                    binding.progressBar.visibility = View.GONE
+                })
             MySingleton.getInstance(context).addToRequestQueue(request)
         }
     }

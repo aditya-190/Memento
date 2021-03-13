@@ -24,8 +24,8 @@ class FavouriteFragment : Fragment() {
     private var adapter: FavouriteAdapter = FavouriteAdapter(favouriteList)
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentFavouriteBinding.inflate(inflater, container, false)
         return binding.root
@@ -56,7 +56,16 @@ class FavouriteFragment : Fragment() {
 
     private fun fetchData() {
         GlobalScope.launch(Dispatchers.IO) {
-            val filePath = File(String.format("%s%sMemento%sFavourites%s", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM).toString(), File.separator, File.separator, File.separator))
+            val filePath = File(
+                String.format(
+                    "%s%sMemento%sFavourites%s",
+                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
+                        .toString(),
+                    File.separator,
+                    File.separator,
+                    File.separator
+                )
+            )
             val allFiles = filePath.listFiles()
 
             if (!allFiles.isNullOrEmpty()) {
@@ -66,7 +75,8 @@ class FavouriteFragment : Fragment() {
                 binding.favouriteRecycler.scrollToPosition(allFiles.size - 1)
             }
             withContext(Dispatchers.Main) {
-                binding.nothing.visibility = if (favouriteList.isEmpty()) View.VISIBLE else View.GONE
+                binding.nothing.visibility =
+                    if (favouriteList.isEmpty()) View.VISIBLE else View.GONE
                 binding.favouriteRecycler.adapter?.notifyDataSetChanged()
             }
         }

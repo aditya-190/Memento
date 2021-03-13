@@ -12,6 +12,9 @@ import com.bhardwaj.memento.fragments.DownloadFragment
 import com.bhardwaj.memento.fragments.FavouriteFragment
 import com.bhardwaj.memento.fragments.HomeFragment
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.MobileAds
+import com.google.firebase.analytics.FirebaseAnalytics
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +28,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initialise() {
+        MobileAds.initialize(this)
+        FirebaseAnalytics.getInstance(this)
+        binding.adsView.loadAd(AdRequest.Builder().build())
+
         binding.navigation.apply {
             add(MeowBottomNavigation.Model(0, R.drawable.icon_home))
             add(MeowBottomNavigation.Model(2, R.drawable.icon_favourite))
@@ -70,8 +77,15 @@ class MainActivity : AppCompatActivity() {
         Common.fullScreen(this.window)
     }
 
-    private fun checkWritePermission() = ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-    private fun checkReadPermission() = ContextCompat.checkSelfPermission(this@MainActivity, android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    private fun checkWritePermission() = ContextCompat.checkSelfPermission(
+        this@MainActivity,
+        android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+    ) == PackageManager.PERMISSION_GRANTED
+
+    private fun checkReadPermission() = ContextCompat.checkSelfPermission(
+        this@MainActivity,
+        android.Manifest.permission.READ_EXTERNAL_STORAGE
+    ) == PackageManager.PERMISSION_GRANTED
 
     fun requestPermissions() {
         val requestPermissionList = mutableListOf<String>()
@@ -84,11 +98,19 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (requestPermissionList.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this@MainActivity, requestPermissionList.toTypedArray(), 100)
+            ActivityCompat.requestPermissions(
+                this@MainActivity,
+                requestPermissionList.toTypedArray(),
+                100
+            )
         }
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
