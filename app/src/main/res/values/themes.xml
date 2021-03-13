@@ -7,7 +7,6 @@
         <item name="colorSecondary">@color/backgroundColor</item>
         <item name="colorSecondaryVariant">@color/backgroundColor</item>
         <item name="colorOnSecondary">@color/backgroundColor</item>
-        <item name="backgroundColor">null</item>
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     </style>
 
