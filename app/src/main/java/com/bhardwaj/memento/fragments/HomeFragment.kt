@@ -1,5 +1,6 @@
 package com.bhardwaj.memento.fragments
 
+import android.Manifest
 import android.animation.Animator
 import android.content.ContentValues
 import android.content.Context
@@ -41,7 +42,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
-import java.io.OutputStream
 
 class HomeFragment : Fragment() {
     private lateinit var mContext: Context
@@ -249,36 +249,37 @@ class HomeFragment : Fragment() {
     fun saveImageToGallery(bitmap: Bitmap, fileLocation: String) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                (activity as MainActivity).requestPermissions()
-
+                (activity as MainActivity).requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
                 val fileName = String.format("Memento-%d.PNG", System.currentTimeMillis().toInt())
-                val filePath = String.format(
-                    "%s%sMemento%s%s",
-                    Environment.DIRECTORY_DCIM,
-                    File.separator,
-                    File.separator,
-                    fileLocation
-                )
-
                 val contentValues = ContentValues()
                 contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
                 contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "image/*")
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, filePath)
+                    contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, "${Environment.DIRECTORY_DCIM}${File.separator}Memento${File.separator}")
+                    contentValues.put(MediaStore.MediaColumns.IS_PENDING, 1)
+                } else {
+                    val filePath = String.format("%s%sMemento%s%s", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), File.separator, File.separator, fileLocation)
+                    contentValues.put(MediaStore.MediaColumns.DATA, filePath)
                 }
 
                 val resolver = mContext.contentResolver
-
-                val stream: OutputStream?
                 var uri: Uri? = null
 
                 try {
                     val contentUri: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
                     uri = resolver.insert(contentUri, contentValues)
-                    stream = resolver.openOutputStream(uri!!)
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                    stream?.close()
 
+                    if (uri != null) {
+                        val stream = resolver.openOutputStream(uri)
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                        stream?.close()
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            contentValues.clear()
+                            contentValues.put(MediaStore.MediaColumns.IS_PENDING, 0)
+                            resolver.update(uri, contentValues, null, null)
+                        }
+                    }
                 } catch (error: IOException) {
                     resolver.delete(uri!!, null, null)
                 }
