@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flRootFragmentDownload"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.FavouriteFragment">
@@ -40,7 +41,7 @@
             app:layout_constraintGuide_percent=".03" />
 
         <TextView
-            android:id="@+id/download"
+            android:id="@+id/tvDownloadHeading"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/first"
@@ -52,20 +53,22 @@
             app:layout_constraintTop_toTopOf="@id/g4" />
 
         <ImageView
-            android:id="@+id/quit"
+            android:id="@+id/ivLogOutButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="16dp"
+            android:clickable="true"
             android:contentDescription="@string/app_name"
+            android:focusable="true"
             android:padding="18dp"
             android:src="@drawable/icon_quit"
-            app:layout_constraintBottom_toBottomOf="@id/download"
+            app:layout_constraintBottom_toBottomOf="@id/tvDownloadHeading"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/g2"
-            app:layout_constraintTop_toTopOf="@id/download" />
+            app:layout_constraintTop_toTopOf="@id/tvDownloadHeading" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+            android:id="@+id/cvDownloadContainer"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="4dp"
@@ -77,23 +80,23 @@
             app:layout_constraintTop_toTopOf="@id/g3">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/download_recycler"
+                android:id="@+id/rvDownloadRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:elevation="16dp" />
         </androidx.cardview.widget.CardView>
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/nothing"
+            android:id="@+id/lavNoDownloadsLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:elevation="16dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/cardView"
+            app:layout_constraintBottom_toBottomOf="@+id/cvDownloadContainer"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/cardView"
-            app:layout_constraintStart_toStartOf="@id/cardView"
-            app:layout_constraintTop_toTopOf="@id/cardView"
+            app:layout_constraintEnd_toEndOf="@id/cvDownloadContainer"
+            app:layout_constraintStart_toStartOf="@id/cvDownloadContainer"
+            app:layout_constraintTop_toTopOf="@id/cvDownloadContainer"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/nothing"

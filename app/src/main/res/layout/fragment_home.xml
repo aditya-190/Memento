@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flRootFragmentHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.HomeFragment">
@@ -40,7 +41,7 @@
             app:layout_constraintGuide_percent=".03" />
 
         <TextView
-            android:id="@+id/home"
+            android:id="@+id/tvHomeHeading"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/first"
@@ -48,55 +49,55 @@
             android:text="@string/home"
             android:textColor="@color/white"
             android:textSize="42sp"
-            app:layout_constraintEnd_toStartOf="@id/shareButton"
+            app:layout_constraintEnd_toStartOf="@id/lavShareButton"
             app:layout_constraintStart_toStartOf="@id/g1"
             app:layout_constraintTop_toTopOf="@id/g4" />
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/shareButton"
+            android:id="@+id/lavShareButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:elevation="10dp"
-            app:layout_constraintBottom_toBottomOf="@id/home"
+            app:layout_constraintBottom_toBottomOf="@id/tvHomeHeading"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/g2"
-            app:layout_constraintStart_toStartOf="@id/nextButton"
-            app:layout_constraintTop_toTopOf="@id/home"
+            app:layout_constraintStart_toStartOf="@id/lavNextMeme"
+            app:layout_constraintTop_toTopOf="@id/tvHomeHeading"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/share" />
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/likeButton"
+            android:id="@+id/lavLikeButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:alpha="0"
             android:elevation="18dp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardView"
+            app:layout_constraintBottom_toBottomOf="@+id/cvHomeContainer"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/cardView"
-            app:layout_constraintStart_toStartOf="@id/cardView"
-            app:layout_constraintTop_toTopOf="@+id/cardView"
+            app:layout_constraintEnd_toEndOf="@id/cvHomeContainer"
+            app:layout_constraintStart_toStartOf="@id/cvHomeContainer"
+            app:layout_constraintTop_toTopOf="@+id/cvHomeContainer"
             app:lottie_autoPlay="false"
             app:lottie_loop="false"
             app:lottie_rawRes="@raw/heart" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
-            android:id="@+id/progress_bar"
+            android:id="@+id/cpiProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="14dp"
             android:indeterminate="true"
             android:visibility="visible"
             app:indicatorColor="@array/progress_bar"
-            app:layout_constraintBottom_toBottomOf="@+id/cardView"
-            app:layout_constraintEnd_toEndOf="@id/cardView"
-            app:layout_constraintStart_toStartOf="@+id/cardView"
-            app:layout_constraintTop_toTopOf="@id/cardView"
+            app:layout_constraintBottom_toBottomOf="@+id/cvHomeContainer"
+            app:layout_constraintEnd_toEndOf="@id/cvHomeContainer"
+            app:layout_constraintStart_toStartOf="@+id/cvHomeContainer"
+            app:layout_constraintTop_toTopOf="@id/cvHomeContainer"
             app:showAnimationBehavior="inward" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+            android:id="@+id/cvHomeContainer"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="4dp"
@@ -108,7 +109,7 @@
             app:layout_constraintTop_toTopOf="@id/g3">
 
             <ImageView
-                android:id="@+id/image"
+                android:id="@+id/ivMeme"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@string/app_name"
@@ -116,7 +117,7 @@
         </androidx.cardview.widget.CardView>
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/downloadButton"
+            android:id="@+id/lavDownloadMeme"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:elevation="8dp"
@@ -125,7 +126,7 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@id/hiddenView"
             app:layout_constraintStart_toStartOf="@id/g1"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/cvHomeContainer"
             app:lottie_autoPlay="false"
             app:lottie_loop="false"
             app:lottie_rawRes="@raw/download" />
@@ -137,12 +138,12 @@
             android:clickable="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toStartOf="@id/nextButton"
-            app:layout_constraintStart_toEndOf="@id/downloadButton"
-            app:layout_constraintTop_toBottomOf="@+id/cardView" />
+            app:layout_constraintEnd_toStartOf="@id/lavNextMeme"
+            app:layout_constraintStart_toEndOf="@id/lavDownloadMeme"
+            app:layout_constraintTop_toBottomOf="@+id/cvHomeContainer" />
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/nextButton"
+            android:id="@+id/lavNextMeme"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:elevation="8dp"
@@ -152,7 +153,7 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/g2"
             app:layout_constraintStart_toEndOf="@id/hiddenView"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/cvHomeContainer"
             app:lottie_autoPlay="false"
             app:lottie_loop="false"
             app:lottie_rawRes="@raw/next" />
@@ -165,7 +166,7 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/g2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
+            app:layout_constraintTop_toBottomOf="@+id/cvHomeContainer"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/hang" />

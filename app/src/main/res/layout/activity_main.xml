@@ -3,6 +3,7 @@
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clRootMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -26,26 +27,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".40" />
+        app:layout_constraintGuide_percent=".35" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/g4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".60" />
+        app:layout_constraintGuide_percent=".65" />
 
     <FrameLayout
-        android:id="@+id/fragments"
+        android:id="@+id/flFragmentContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/ads_view"
+        app:layout_constraintBottom_toTopOf="@+id/avShowAds"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.etebarian.meowbottomnavigation.MeowBottomNavigation
-        android:id="@+id/navigation"
+    <com.bhardwaj.meowbottomnavigation.MeowBottomNavigation
+        android:id="@+id/mbnNavigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:elevation="14dp"
@@ -62,7 +63,7 @@
         app:mbn_shadowColor="@color/shadowColor" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/quit"
+        android:id="@+id/cvLogOutContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
@@ -75,22 +76,22 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/sad"
+        android:id="@+id/lavSad"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:elevation="16dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/quit"
+        app:layout_constraintBottom_toTopOf="@id/cvLogOutContainer"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@id/g4"
         app:layout_constraintStart_toStartOf="@id/g3"
-        app:layout_constraintTop_toTopOf="@id/quit"
+        app:layout_constraintTop_toTopOf="@id/cvLogOutContainer"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
         app:lottie_rawRes="@raw/sad" />
 
     <TextView
-        android:id="@+id/quit_head"
+        android:id="@+id/tvExitHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -99,12 +100,12 @@
         android:textColor="@color/Google_2"
         android:textSize="18sp"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@id/quit"
-        app:layout_constraintStart_toStartOf="@id/quit"
-        app:layout_constraintTop_toBottomOf="@id/sad" />
+        app:layout_constraintEnd_toEndOf="@id/cvLogOutContainer"
+        app:layout_constraintStart_toStartOf="@id/cvLogOutContainer"
+        app:layout_constraintTop_toBottomOf="@id/lavSad" />
 
     <TextView
-        android:id="@+id/no"
+        android:id="@+id/tvNoButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -119,11 +120,11 @@
         android:textColor="@color/Google_2"
         android:textSize="20sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/quit"
-        app:layout_constraintEnd_toStartOf="@id/yes" />
+        app:layout_constraintBottom_toBottomOf="@id/cvLogOutContainer"
+        app:layout_constraintEnd_toStartOf="@id/tvYesButton" />
 
     <TextView
-        android:id="@+id/yes"
+        android:id="@+id/tvYesButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -138,18 +139,18 @@
         android:textColor="@color/Google_4"
         android:textSize="20sp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/quit"
-        app:layout_constraintEnd_toEndOf="@id/quit" />
+        app:layout_constraintBottom_toBottomOf="@id/cvLogOutContainer"
+        app:layout_constraintEnd_toEndOf="@id/cvLogOutContainer" />
 
     <com.google.android.gms.ads.AdView
-        android:id="@+id/ads_view"
+        android:id="@+id/avShowAds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="2dp"
         ads:adSize="BANNER"
         ads:adUnitId="@string/home_banner"
-        ads:layout_constraintTop_toBottomOf="@id/fragments"
-        app:layout_constraintBottom_toTopOf="@id/navigation"
+        ads:layout_constraintTop_toBottomOf="@id/flFragmentContainer"
+        app:layout_constraintBottom_toTopOf="@id/mbnNavigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

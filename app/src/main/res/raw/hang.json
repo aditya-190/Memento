@@ -36,7 +36,7 @@
       "ddd": 0,
       "ind": 1,
       "ty": 5,
-      "nm": "Hang in",
+      "nm": "Hang in!!!",
       "parent": 2,
       "sr": 1,
       "ks": {
@@ -86,7 +86,7 @@
               "s": {
                 "s": 102,
                 "f": "ComicBook-Bold",
-                "t": "Hang in There!!!",
+                "t": "Hang in!!!",
                 "j": 6,
                 "tr": -50,
                 "lh": 98.0000228881836,

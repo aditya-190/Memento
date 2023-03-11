@@ -3,72 +3,100 @@ package com.bhardwaj.memento
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.bhardwaj.memento.databinding.ActivityMainBinding
+import com.airbnb.lottie.LottieAnimationView
 import com.bhardwaj.memento.fragments.DownloadFragment
 import com.bhardwaj.memento.fragments.FavouriteFragment
 import com.bhardwaj.memento.fragments.HomeFragment
-import com.etebarian.meowbottomnavigation.MeowBottomNavigation
+import com.bhardwaj.meowbottomnavigation.MeowBottomNavigation
 import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var mContext: MainActivity
+    private lateinit var clRootMain: ConstraintLayout
+    private lateinit var flFragmentContainer: FrameLayout
+    private lateinit var mbnNavigation: MeowBottomNavigation
+    private lateinit var lavSad: LottieAnimationView
+    private lateinit var cvLogOutContainer: CardView
+    private lateinit var tvExitHeading: TextView
+    private lateinit var tvNoButton: TextView
+    private lateinit var tvYesButton: TextView
+    private lateinit var avShowAds: AdView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_main)
         initialise()
         clickListeners()
     }
 
     private fun initialise() {
-        MobileAds.initialize(this)
-        FirebaseAnalytics.getInstance(this)
-        binding.adsView.loadAd(AdRequest.Builder().build())
+        mContext = this@MainActivity
+        clRootMain = findViewById(R.id.clRootMain)
+        flFragmentContainer = findViewById(R.id.flFragmentContainer)
+        mbnNavigation = findViewById(R.id.mbnNavigation)
+        lavSad = findViewById(R.id.lavSad)
+        cvLogOutContainer = findViewById(R.id.cvLogOutContainer)
+        tvExitHeading = findViewById(R.id.tvExitHeading)
+        tvNoButton = findViewById(R.id.tvNoButton)
+        tvYesButton = findViewById(R.id.tvYesButton)
+        avShowAds = findViewById(R.id.avShowAds)
 
-        binding.navigation.apply {
+        MobileAds.initialize(mContext)
+        FirebaseAnalytics.getInstance(mContext)
+
+        avShowAds.loadAd(AdRequest.Builder().build())
+
+        mbnNavigation.apply {
             add(MeowBottomNavigation.Model(0, R.drawable.icon_home))
             add(MeowBottomNavigation.Model(2, R.drawable.icon_favourite))
             add(MeowBottomNavigation.Model(3, R.drawable.icon_download))
             show(0)
         }
-        supportFragmentManager.beginTransaction().replace(R.id.fragments, HomeFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.flFragmentContainer, HomeFragment())
+            .commit()
     }
 
     private fun clickListeners() {
-        binding.navigation.setOnClickMenuListener {
-            val fragment: Fragment = when (it.id) {
-                2 -> FavouriteFragment()
-                3 -> DownloadFragment()
-                else -> HomeFragment()
+        mbnNavigation.setOnClickMenuListener { navigation ->
+            val fragment: Fragment = when (navigation.id) {
+                2 -> FavouriteFragment().newInstance()
+                3 -> DownloadFragment().newInstance()
+                else -> HomeFragment().newInstance()
             }
-            supportFragmentManager.beginTransaction().replace(R.id.fragments, fragment).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.flFragmentContainer, fragment)
+                .commit()
         }
     }
 
     fun quitDialog() {
-        binding.quit.visibility = View.VISIBLE
-        binding.quitHead.visibility = View.VISIBLE
-        binding.sad.visibility = View.VISIBLE
-        binding.no.visibility = View.VISIBLE
-        binding.yes.visibility = View.VISIBLE
+        cvLogOutContainer.visibility = View.VISIBLE
+        tvExitHeading.visibility = View.VISIBLE
+        lavSad.visibility = View.VISIBLE
+        tvNoButton.visibility = View.VISIBLE
+        tvYesButton.visibility = View.VISIBLE
 
-        binding.yes.setOnClickListener {
+        tvYesButton.setOnClickListener {
             exitProcess(0)
         }
 
-        binding.no.setOnClickListener {
-            binding.quit.visibility = View.GONE
-            binding.quitHead.visibility = View.GONE
-            binding.sad.visibility = View.GONE
-            binding.no.visibility = View.GONE
-            binding.yes.visibility = View.GONE
+        tvNoButton.setOnClickListener {
+            cvLogOutContainer.visibility = View.GONE
+            tvExitHeading.visibility = View.GONE
+            lavSad.visibility = View.GONE
+            tvNoButton.visibility = View.GONE
+            tvYesButton.visibility = View.GONE
         }
     }
 
@@ -78,12 +106,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkWritePermission() = ContextCompat.checkSelfPermission(
-        this@MainActivity,
+        mContext,
         android.Manifest.permission.WRITE_EXTERNAL_STORAGE
     ) == PackageManager.PERMISSION_GRANTED
 
     private fun checkReadPermission() = ContextCompat.checkSelfPermission(
-        this@MainActivity,
+        mContext,
         android.Manifest.permission.READ_EXTERNAL_STORAGE
     ) == PackageManager.PERMISSION_GRANTED
 
@@ -99,21 +127,10 @@ class MainActivity : AppCompatActivity() {
 
         if (requestPermissionList.isNotEmpty()) {
             ActivityCompat.requestPermissions(
-                this@MainActivity,
+                mContext,
                 requestPermissionList.toTypedArray(),
                 100
             )
         }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-    }
-
-    override fun onBackPressed() {
     }
 }

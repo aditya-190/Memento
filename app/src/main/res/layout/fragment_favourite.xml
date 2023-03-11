@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/flRootFragmentFavourite"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.FavouriteFragment">
@@ -40,7 +41,7 @@
             app:layout_constraintGuide_percent=".03" />
 
         <TextView
-            android:id="@+id/favourite"
+            android:id="@+id/tvFavouriteHeading"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/first"
@@ -52,20 +53,20 @@
             app:layout_constraintTop_toTopOf="@id/g4" />
 
         <ImageView
-            android:id="@+id/quit"
+            android:id="@+id/ivLogOutButton"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginEnd="16dp"
             android:contentDescription="@string/app_name"
             android:padding="18dp"
             android:src="@drawable/icon_quit"
-            app:layout_constraintBottom_toBottomOf="@id/favourite"
+            app:layout_constraintBottom_toBottomOf="@id/tvFavouriteHeading"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/g2"
-            app:layout_constraintTop_toTopOf="@id/favourite" />
+            app:layout_constraintTop_toTopOf="@id/tvFavouriteHeading" />
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView"
+            android:id="@+id/cvFavouriteContainer"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginBottom="4dp"
@@ -77,23 +78,23 @@
             app:layout_constraintTop_toTopOf="@id/g3">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/favourite_recycler"
+                android:id="@+id/rvFavouriteRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:elevation="16dp" />
         </androidx.cardview.widget.CardView>
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/nothing"
+            android:id="@+id/lavNoFavouritesLayout"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:elevation="16dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/cardView"
+            app:layout_constraintBottom_toBottomOf="@+id/cvFavouriteContainer"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="@id/cardView"
-            app:layout_constraintStart_toStartOf="@id/cardView"
-            app:layout_constraintTop_toTopOf="@id/cardView"
+            app:layout_constraintEnd_toEndOf="@id/cvFavouriteContainer"
+            app:layout_constraintStart_toStartOf="@id/cvFavouriteContainer"
+            app:layout_constraintTop_toTopOf="@id/cvFavouriteContainer"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/nothing"
