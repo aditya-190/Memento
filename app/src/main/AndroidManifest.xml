@@ -17,9 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Memento"
         android:usesCleartextTraffic="true"
-        tools:ignore="AllowBackup"
-        tools:replace="allowBackup"
-        android:dataExtractionRules="@xml/data_extraction_rules">
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="false"
+        tools:targetApi="s">
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="@string/app_id" />
