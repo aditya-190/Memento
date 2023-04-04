@@ -104,7 +104,7 @@ class HomeFragment : Fragment() {
             fetchRandomMeme()
             mainViewModel.adsCounter += 1
             when (mainViewModel.adsCounter) {
-                4 -> {
+                15 -> {
                     initialiseAds()
                     if (rewardedAds != null) {
                         rewardedAds?.show(activity as MainActivity) {}
