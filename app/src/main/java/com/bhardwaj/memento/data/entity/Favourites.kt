@@ -1,4 +1,4 @@
-package com.bhardwaj.memento.models
+package com.bhardwaj.memento.data.entity
 
 import android.net.Uri
 

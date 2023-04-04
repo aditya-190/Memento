@@ -6,7 +6,7 @@
     android:id="@+id/clRootMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.activity.MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/g1"
@@ -36,14 +36,18 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent=".65" />
 
-    <FrameLayout
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/flFragmentContainer"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:defaultNavHost="true"
         app:layout_constraintBottom_toTopOf="@+id/avShowAds"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:navGraph="@navigation/nav_graph"
+        tools:ignore="FragmentTagUsage" />
 
     <com.bhardwaj.meowbottomnavigation.MeowBottomNavigation
         android:id="@+id/mbnNavigation"
@@ -60,7 +64,8 @@
         app:mbn_defaultIconColor="@color/white"
         app:mbn_rippleColor="@color/secondaryColor"
         app:mbn_selectedIconColor="@color/secondaryColor"
-        app:mbn_shadowColor="@color/shadowColor" />
+        app:mbn_shadowColor="@color/shadowColor"
+        app:menu="@menu/bottom_navigation" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvLogOutContainer"

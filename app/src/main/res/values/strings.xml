@@ -4,16 +4,20 @@
     <string name="favourite">Favourite</string>
     <string name="download">Download</string>
     <string name="no">No</string>
+    <string name="ok">OK</string>
     <string name="yes">Yes</string>
     <string name="really_quit">Do you Really want to Exit?</string>
     <string name="something_went_wrong">Something Went Wrong</string>
-    <string name="share_via">"Share this meme with : "</string>
-    <string name="downloaded_already">Meme Already Downloaded</string>
+    <string name="share_via">Share this meme with : </string>
+    <string name="share_meme">Check out this hilarious meme I found! 😂</string>
+    <string name="downloaded_already">Meme is already downloaded.</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="permission_required">Storage access is required to download memes.</string>
 
     <!-- Actual -->
-<!--        <string name="app_id">ca-app-pub-5040281513434473~2607780992</string>-->
-<!--        <string name="home_banner">ca-app-pub-5040281513434473/5629530150</string>-->
-<!--        <string name="rewarded_id">ca-app-pub-5040281513434473/1294699324</string>-->
+    <!--        <string name="app_id">ca-app-pub-5040281513434473~2607780992</string>-->
+    <!--        <string name="home_banner">ca-app-pub-5040281513434473/5629530150</string>-->
+    <!--        <string name="rewarded_id">ca-app-pub-5040281513434473/1294699324</string>-->
 
     <!-- For Testing Purpose -->
     <string name="app_id">ca-app-pub-3940256099942544~3347511713</string>
