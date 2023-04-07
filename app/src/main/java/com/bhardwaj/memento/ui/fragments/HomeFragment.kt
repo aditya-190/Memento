@@ -1,12 +1,18 @@
 package com.bhardwaj.memento.ui.fragments
 
+import android.Manifest
 import android.animation.Animator
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.media.MediaPlayer
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -25,19 +31,40 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    private var binding: FragmentHomeBinding? = null
     private val mainViewModel: MainViewModel by activityViewModels()
     private var isDownload: Boolean = false
     private var rewardedAds: RewardedAd? = null
     private var mediaPlayer: MediaPlayer? = null
+    private var readPermissionGranted = false
+    private var writePermissionGranted = false
+    private lateinit var permissionLauncher: ActivityResultLauncher<Array<String>>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        permissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+                readPermissionGranted =
+                    permissions[Manifest.permission.READ_EXTERNAL_STORAGE] ?: readPermissionGranted
+                writePermissionGranted = permissions[Manifest.permission.WRITE_EXTERNAL_STORAGE]
+                    ?: writePermissionGranted
+
+                if (!readPermissionGranted || !writePermissionGranted) {
+                    Snackbar.make(
+                        requireView(),
+                        getString(R.string.permission_denied),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+            }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+    ): View? {
+        binding = FragmentHomeBinding.inflate(layoutInflater)
+        return binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,17 +99,17 @@ class HomeFragment : Fragment() {
     }
 
     private fun clickListeners() {
-        binding.cvHomeContainer.setOnClickListener(object : DoubleClickListener() {
+        binding?.cvHomeContainer?.setOnClickListener(object : DoubleClickListener() {
             override fun onDoubleClick(v: View?) {
-                if ((activity as MainActivity).updateOrRequestPermission()) {
-                    binding.lavLikeButton.also { lottie ->
+                if (updateOrRequestPermission()) {
+                    binding?.lavLikeButton.also { lottie ->
                         mediaPlayer =
                             MediaPlayer.create(requireContext(), R.raw.like_button_clicked)
                         mediaPlayer!!.start()
 
-                        lottie.alpha = 0.75F
-                        lottie.playAnimation()
-                        lottie.addAnimatorListener(object : Animator.AnimatorListener {
+                        lottie?.alpha = 0.75F
+                        lottie?.playAnimation()
+                        lottie?.addAnimatorListener(object : Animator.AnimatorListener {
                             override fun onAnimationStart(animation: Animator) {}
                             override fun onAnimationEnd(animation: Animator) {
                                 lottie.alpha = 0F
@@ -93,14 +120,14 @@ class HomeFragment : Fragment() {
                         })
                     }
                     mainViewModel.saveImageToGallery(
-                        binding.ivMeme.drawable.toBitmap(),
-                        "FAVOURITE"
+                        bitmap = binding?.ivMeme?.drawable?.toBitmap(),
+                        fileType = "FAVOURITE"
                     )
                 }
             }
         })
 
-        binding.lavNextMeme.setOnClickListener {
+        binding?.lavNextMeme?.setOnClickListener {
             fetchRandomMeme()
             mainViewModel.adsCounter += 1
             when (mainViewModel.adsCounter) {
@@ -113,28 +140,31 @@ class HomeFragment : Fragment() {
                 }
             }
 
-            binding.lavNextMeme.speed = 3F
-            binding.lavNextMeme.playAnimation()
+            binding?.lavNextMeme?.speed = 3F
+            binding?.lavNextMeme?.playAnimation()
 
             if (isDownload) {
-                binding.lavDownloadMeme.speed = -2.5F
-                binding.lavDownloadMeme.playAnimation()
+                binding?.lavDownloadMeme?.speed = -2.5F
+                binding?.lavDownloadMeme?.playAnimation()
                 isDownload = !isDownload
             }
         }
 
-        binding.lavDownloadMeme.setOnClickListener {
-            if ((activity as MainActivity).updateOrRequestPermission()) {
+        binding?.lavDownloadMeme?.setOnClickListener {
+            if (updateOrRequestPermission()) {
                 if (!isDownload) {
                     mediaPlayer = MediaPlayer.create(requireContext(), R.raw.download_clicked)
                     mediaPlayer!!.start()
-                    binding.lavDownloadMeme.speed = if (isDownload) -2.5F else 2.5F
-                    binding.lavDownloadMeme.playAnimation()
+                    binding?.lavDownloadMeme?.speed = if (isDownload) -2.5F else 2.5F
+                    binding?.lavDownloadMeme?.playAnimation()
                     isDownload = !isDownload
-                    mainViewModel.saveImageToGallery(binding.ivMeme.drawable.toBitmap(), "DOWNLOAD")
+                    mainViewModel.saveImageToGallery(
+                        bitmap = binding?.ivMeme?.drawable?.toBitmap(),
+                        fileType = "DOWNLOAD"
+                    )
                 } else {
                     Snackbar.make(
-                        binding.flRootFragmentHome,
+                        requireView(),
                         getString(R.string.downloaded_already),
                         Snackbar.LENGTH_SHORT
                     ).show()
@@ -142,7 +172,7 @@ class HomeFragment : Fragment() {
             }
         }
 
-        binding.lavShareButton.setOnClickListener {
+        binding?.lavShareButton?.setOnClickListener {
             startActivity(
                 Intent().also {
                     it.action = Intent.ACTION_SEND
@@ -157,44 +187,46 @@ class HomeFragment : Fragment() {
         }
 
         mainViewModel.imageUrl.observe(viewLifecycleOwner) { url ->
-            Glide.with(requireContext()).load(url)
-                .listener(object :
-                    com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable> {
-                    override fun onLoadFailed(
-                        e: com.bumptech.glide.load.engine.GlideException?,
-                        model: Any?,
-                        target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        Snackbar.make(
-                            binding.root,
-                            getString(R.string.something_went_wrong),
-                            Snackbar.LENGTH_SHORT
-                        ).show()
-                        return false
-                    }
+            binding?.ivMeme?.let {
+                Glide.with(requireContext()).load(url)
+                    .listener(object :
+                        com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable> {
+                        override fun onLoadFailed(
+                            e: com.bumptech.glide.load.engine.GlideException?,
+                            model: Any?,
+                            target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            Snackbar.make(
+                                requireView(),
+                                getString(R.string.something_went_wrong),
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                            return false
+                        }
 
-                    override fun onResourceReady(
-                        resource: android.graphics.drawable.Drawable?,
-                        model: Any?,
-                        target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>?,
-                        dataSource: com.bumptech.glide.load.DataSource?,
-                        isFirstResource: Boolean
-                    ): Boolean {
-                        binding.cpiProgressBar.visibility = View.GONE
-                        binding.lavDownloadMeme.isEnabled = true
-                        binding.cvHomeContainer.isEnabled = true
-                        return false
-                    }
-                }).diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true).into(binding.ivMeme)
+                        override fun onResourceReady(
+                            resource: android.graphics.drawable.Drawable?,
+                            model: Any?,
+                            target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>?,
+                            dataSource: com.bumptech.glide.load.DataSource?,
+                            isFirstResource: Boolean
+                        ): Boolean {
+                            binding?.cpiProgressBar?.visibility = View.GONE
+                            binding?.lavDownloadMeme?.isEnabled = true
+                            binding?.cvHomeContainer?.isEnabled = true
+                            return false
+                        }
+                    }).diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true).into(it)
+            }
         }
     }
 
     private fun fetchRandomMeme() {
-        binding.cpiProgressBar.visibility = View.VISIBLE
-        binding.lavDownloadMeme.isEnabled = false
-        binding.cvHomeContainer.isEnabled = false
+        binding?.cpiProgressBar?.visibility = View.VISIBLE
+        binding?.lavDownloadMeme?.isEnabled = false
+        binding?.cvHomeContainer?.isEnabled = false
         mainViewModel.fetchRandomMeme()
     }
 
@@ -212,6 +244,55 @@ class HomeFragment : Fragment() {
 
         companion object {
             private const val DOUBLE_CLICK_TIME_DELTA: Long = 300
+        }
+    }
+
+    fun updateOrRequestPermission(): Boolean {
+        val hasReadPermission = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val hasWritePermission = ContextCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val minSdk29 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+        val minSdk33 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
+        readPermissionGranted = hasReadPermission || minSdk33
+        writePermissionGranted = hasWritePermission || minSdk29
+
+        val permissionsToRequest = mutableListOf<String>()
+
+        if (!readPermissionGranted) {
+            permissionsToRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+
+        if (!writePermissionGranted) {
+            permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+        return when {
+            permissionsToRequest.isEmpty() -> true
+
+            shouldShowRequestPermissionRationale(permissionsToRequest[0]) -> {
+                val snackBar = Snackbar.make(
+                    requireView(),
+                    getString(R.string.permission_required),
+                    Snackbar.LENGTH_LONG
+                )
+                snackBar.show()
+                snackBar.setAction(getString(R.string.ok)) {
+                    permissionLauncher.launch(permissionsToRequest.toTypedArray())
+                }
+                false
+            }
+            else -> {
+                permissionLauncher.launch(permissionsToRequest.toTypedArray())
+                false
+            }
         }
     }
 

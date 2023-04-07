@@ -89,7 +89,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:elevation="16dp"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/cvFavouriteContainer"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="@id/cvFavouriteContainer"
