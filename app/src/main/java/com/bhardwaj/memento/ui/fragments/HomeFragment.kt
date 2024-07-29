@@ -4,6 +4,7 @@ import android.Manifest
 import android.animation.Animator
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.drawable.Drawable
 import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat.shouldShowRequestPermissionRationale
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
@@ -21,7 +24,10 @@ import com.bhardwaj.memento.databinding.FragmentHomeBinding
 import com.bhardwaj.memento.ui.activity.MainActivity
 import com.bhardwaj.memento.viewModels.MainViewModel
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.target.Target
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -190,11 +196,11 @@ class HomeFragment : Fragment() {
             binding?.ivMeme?.let {
                 Glide.with(requireContext()).load(url)
                     .listener(object :
-                        com.bumptech.glide.request.RequestListener<android.graphics.drawable.Drawable> {
+                        com.bumptech.glide.request.RequestListener<Drawable> {
                         override fun onLoadFailed(
-                            e: com.bumptech.glide.load.engine.GlideException?,
+                            e: GlideException?,
                             model: Any?,
-                            target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>?,
+                            target: Target<Drawable?>,
                             isFirstResource: Boolean
                         ): Boolean {
                             Snackbar.make(
@@ -206,10 +212,10 @@ class HomeFragment : Fragment() {
                         }
 
                         override fun onResourceReady(
-                            resource: android.graphics.drawable.Drawable?,
-                            model: Any?,
-                            target: com.bumptech.glide.request.target.Target<android.graphics.drawable.Drawable>?,
-                            dataSource: com.bumptech.glide.load.DataSource?,
+                            resource: Drawable,
+                            model: Any,
+                            target: Target<Drawable?>?,
+                            dataSource: DataSource,
                             isFirstResource: Boolean
                         ): Boolean {
                             binding?.cpiProgressBar?.visibility = View.GONE

@@ -118,13 +118,15 @@ class MainViewModel @Inject constructor(
                     getApplication<MementoApplication>().contentResolver.openOutputStream(uri)
                         .use { outputStream ->
                             if (bitmap != null) {
-                                if (!bitmap.compress(
-                                        Bitmap.CompressFormat.JPEG,
-                                        100,
-                                        outputStream
-                                    )
-                                ) {
-                                    throw IOException("Couldn't save bitmap.")
+                                outputStream?.let {
+                                    if (!bitmap.compress(
+                                            Bitmap.CompressFormat.JPEG,
+                                            100,
+                                            it
+                                        )
+                                    ) {
+                                        throw IOException("Couldn't save bitmap.")
+                                    }
                                 }
                             }
                         }
