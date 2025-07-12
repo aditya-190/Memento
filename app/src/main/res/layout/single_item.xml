@@ -9,7 +9,7 @@
         android:id="@+id/ivMeme"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:contentDescription="@string/app_name"
         android:scaleType="fitXY"
         app:layout_constraintDimensionRatio="1:1"
